@@ -33,10 +33,4 @@ public class BaseResponse<T> {
         baseResponse.code = 0;
         return baseResponse;
     }
-
-    public BaseResponse<T> add(String key, Object value) {
-        this.map.put(key, value);
-        return this;
-    }
-
 }

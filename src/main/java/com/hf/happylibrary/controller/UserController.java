@@ -3,8 +3,6 @@ package com.hf.happylibrary.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hf.happylibrary.common.BaseResponse;
-import com.hf.happylibrary.common.ErrorCode;
-import com.hf.happylibrary.exception.BusinessException;
 import com.hf.happylibrary.model.domain.User;
 import com.hf.happylibrary.model.request.UserRegisterRequest;
 import com.hf.happylibrary.service.UserService;
@@ -34,9 +32,10 @@ public class UserController {
     public BaseResponse<User> login(@RequestBody User user,
                                     HttpServletRequest request) {
         if (user == null) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR,"传入的参数为空");
+            return BaseResponse.error("传入的user为空");
         }
         User result = userService.userLogin(user);
+        request.getSession().setAttribute("user",user.getId());
         return BaseResponse.success(result);
     }
 
@@ -59,13 +58,13 @@ public class UserController {
     @PostMapping("/register")
     public BaseResponse<String> register(@RequestBody UserRegisterRequest userRegisterRequest) {
         if (userRegisterRequest == null) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+            return BaseResponse.error("传入的注册参数为空");
         }
         boolean result = userService.userRegister(userRegisterRequest);
         if (!result) {
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR,"保存失败");
+            return BaseResponse.error("新用户注册失败");
         }
-        return BaseResponse.success("注册成功");
+        return BaseResponse.success("新用户注册成功");
     }
 
     /**
@@ -102,18 +101,18 @@ public class UserController {
                                        HttpServletRequest request) {
 
         if (user == null) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+            return BaseResponse.error("传入的user参数为空");
         }
         Long attribute = (Long) request.getSession().getAttribute("user");
         if (attribute == null) {
-            throw new BusinessException(ErrorCode.NOT_LOGIN);
+            return BaseResponse.error("用户未登录");
         }
         boolean result = userService.updateById(user);
         if (!result) {
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR,"修改失败");
+            return BaseResponse.error("修改用户信息失败");
         }
 
-        return BaseResponse.success("修改成功");
+        return BaseResponse.success("修改用户信息成功");
     }
 
     /**
@@ -124,7 +123,7 @@ public class UserController {
     @GetMapping("/{id}")
     public BaseResponse<User> get(@PathVariable Long id) {
         if (id == null) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+            return BaseResponse.error("传入的id为空");
         }
         User user = userService.getById(id);
         if (user == null) {
@@ -137,7 +136,7 @@ public class UserController {
     @DeleteMapping("/delete")
     public BaseResponse<String> delete(Long id) {
         if (id == null) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+            return BaseResponse.error("传入的id为空");
         }
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(User::getId, id);

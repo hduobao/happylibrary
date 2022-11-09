@@ -31,6 +31,7 @@ public class CommonController {
     public BaseResponse<String> upload(MultipartFile file) {
         //获取原始文件名
         String originalFilename = file.getOriginalFilename();
+        //获取文件名后缀
         String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
         //使用UUID重新生成文件名，防止文件名称重复造成文件覆盖
         String fileName = UUID.randomUUID().toString() + suffix;

@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+/**
+ * 用于处理自动插入createTime以及updateTime字段
+ */
 @Component
 public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override

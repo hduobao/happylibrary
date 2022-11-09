@@ -33,12 +33,12 @@ public class BookController {
     public BaseResponse<String> add(@RequestBody Book book) {
         //判断参数book是否为空
         if (book == null) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+            return BaseResponse.error("传入的book为空");
         }
         //非空则进行插入操作
         boolean result = bookService.save(book);
         if (!result) {
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR);
+            return BaseResponse.error("添加书籍失败");
         }
 
         return BaseResponse.success("添加书籍成功");
@@ -47,16 +47,15 @@ public class BookController {
     @GetMapping("/page")
     public BaseResponse<Page> page(int page, int pageSize) {
         //创建分页构造器
-        Page<Book> pageInfo = new Page<>();
+        Page<Book> pageInfo = new Page<>(page, pageSize);
         //创建条件构造器
         LambdaQueryWrapper<Book> queryWrapper = new LambdaQueryWrapper<>();
         //按照书本的id升序排序
         queryWrapper.orderByAsc(Book::getId);
         Page<Book> result = bookService.page(pageInfo, queryWrapper);
         if (result == null) {
-            throw new BusinessException(ErrorCode.NULL_ERROR);
+            return BaseResponse.error("暂无数据");
         }
-
         return BaseResponse.success(pageInfo);
     }
 

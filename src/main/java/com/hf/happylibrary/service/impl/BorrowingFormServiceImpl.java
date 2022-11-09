@@ -71,7 +71,7 @@ public class BorrowingFormServiceImpl extends ServiceImpl<BorrowingFormMapper, B
         if (form == null) {
             throw new BusinessException(ErrorCode.NULL_ERROR);
         }
-        if (user.getId() != form.getUserId()) {
+        if (!user.getId().equals(form.getUserId())) {
             throw new BusinessException(ErrorCode.NO_AUTH);
         }
         form.setReturnTime(new Date());

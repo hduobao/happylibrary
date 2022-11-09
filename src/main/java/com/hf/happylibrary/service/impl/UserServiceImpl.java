@@ -8,7 +8,6 @@ import com.hf.happylibrary.mapper.UserMapper;
 import com.hf.happylibrary.model.domain.User;
 import com.hf.happylibrary.model.request.UserRegisterRequest;
 import com.hf.happylibrary.service.UserService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -34,6 +33,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public User userLogin(User user) {
         Long userAccount = user.getUserAccount();
         String userPassword = user.getUserPassword();
+        if (userAccount == null || userPassword == null) {
+            throw new BusinessException(ErrorCode.LOGIN_PARAMS_NULL);
+        }
         //先对用户的密码进行加密处理
         String encryptPassword = DigestUtils.md5DigestAsHex(userPassword.getBytes());
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper();
@@ -66,10 +68,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         Long userAccount = userRegisterRequest.getUserAccount();
         String userPassword = userRegisterRequest.getUserPassword();
         String checkPassword = userRegisterRequest.getCheckPassword();
-        if (StringUtils.isAnyBlank(userAccount.toString(), userPassword, checkPassword)) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR,"");
+        if (userAccount == null || userPassword == null || checkPassword == null) {
+            throw new BusinessException(ErrorCode.REGISTER_PARAMS_NULL);
         }
-        if (userAccount.toString().length() < 4 ) {
+        if (userAccount.toString().length() < 5 ) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"用户账号过短");
         }
         if (!userPassword.equals(checkPassword)) {
@@ -79,7 +81,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         queryWrapper.eq(User::getUserAccount, userAccount);
         User selectUser = userMapper.selectOne(queryWrapper);
         if (selectUser != null) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR,"用户已存在");
+            throw new BusinessException(ErrorCode.EXIST_ERROR);
         }
         //如果以上的判断都可以通过，则可以真正的插入数据
         //加密
@@ -91,6 +93,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         boolean saveResult = this.save(user);
 
         return saveResult;
+    }
+
+    public static boolean isAdmin(User user) {
+        boolean flag = false;
+        if (user.getUserRole() == 1) {
+            flag = true;
+        }
+
+        return flag;
     }
 
 }
