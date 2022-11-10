@@ -31,6 +31,11 @@ public class BorrowingForm implements Serializable {
     private Long bookId;
 
     /**
+     * 借阅图书的期限
+     */
+    private Integer borrowTerm;
+
+    /**
      * 借阅时间
      */
     private Date borrowTime;
@@ -39,6 +44,11 @@ public class BorrowingForm implements Serializable {
      * 归还时间
      */
     private Date returnTime;
+
+    /**
+     * 是否违规
+     */
+    private Integer returnStatus;
 
     /**
      * 创建时间

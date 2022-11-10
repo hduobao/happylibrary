@@ -71,10 +71,25 @@ public class BorrowingFormServiceImpl extends ServiceImpl<BorrowingFormMapper, B
         if (form == null) {
             throw new BusinessException(ErrorCode.NULL_ERROR);
         }
+        if (form.getReturnTime() != null) {
+            throw new BusinessException(ErrorCode.ALREADY_RETURN);
+        }
         if (!user.getId().equals(form.getUserId())) {
             throw new BusinessException(ErrorCode.NO_AUTH);
         }
-        form.setReturnTime(new Date());
+        //获取借阅的期限
+        Integer borrowTerm = form.getBorrowTerm();
+        //获取借阅的开始时间
+        Date borrowTime = form.getBorrowTime();
+        //生成归还时间
+        Date returnTime = new Date();
+        form.setReturnTime(returnTime);
+        //如果为true则是正常归还，否则是超时归还
+        boolean b = (returnTime.getTime() - borrowTime.getTime())/(24*3600*1000) < borrowTerm;
+        if (!b) {
+            form.setReturnStatus(1);
+        }
+        form.setReturnStatus(0);
         int result = borrowingFormMapper.updateById(form);
         if (result != 0) {
             BorrowingForm selectBorrow = this.getById(borrowId);

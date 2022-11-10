@@ -8,8 +8,10 @@
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="userId" column="user_id" jdbcType="BIGINT"/>
             <result property="bookId" column="book_id" jdbcType="BIGINT"/>
+            <result property="borrowTerm" column="borrow_term" jdbcType="INTEGER"/>
             <result property="borrowTime" column="borrow_time" jdbcType="TIMESTAMP"/>
             <result property="returnTime" column="return_time" jdbcType="TIMESTAMP"/>
+            <result property="returnStatus" column="return_status" jdbcType="TINYINT"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
@@ -17,7 +19,8 @@
 
     <sql id="Base_Column_List">
         id,user_id,book_id,
-        borrow_time,return_time,create_time,
-        update_time,is_delete
+        borrow_term,return_time,return_status,
+        update_time,is_delete,create_time,
+        borrow_time
     </sql>
 </mapper>

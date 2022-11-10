@@ -80,9 +80,9 @@ public class BorrowController {
         }
         //获取当前登录用户的id
         Long userId = (Long) request.getSession().getAttribute("user");
-        if (userId == null) {
-            return BaseResponse.error("用户未登录");
-        }
+//        if (userId == null) {
+//            return BaseResponse.error("用户未登录");
+//        }
         User user = userService.getById(1);
         if (user == null) {
             return BaseResponse.error("不存在用户Id为"+ userId + "的用户");

@@ -11,6 +11,8 @@ import com.hf.happylibrary.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * 用于处理book资源的请求
  */
@@ -45,11 +47,35 @@ public class BookController {
     }
 
     @GetMapping("/page")
-    public BaseResponse<Page> page(int page, int pageSize) {
+    public BaseResponse<Page> page(@RequestBody Map<String,String> map,
+                                   int page, int pageSize, String value) {
+        String option = map.get("option");
         //创建分页构造器
         Page<Book> pageInfo = new Page<>(page, pageSize);
         //创建条件构造器
         LambdaQueryWrapper<Book> queryWrapper = new LambdaQueryWrapper<>();
+        switch (option) {
+            case "书名":
+                queryWrapper = bookService.searchByName(value, queryWrapper);
+                break;
+            case "任意词":
+                queryWrapper = bookService.searchByAnyWord(value, queryWrapper);
+                break;
+            case "作者":
+                queryWrapper = bookService.searchByAuthor(value, queryWrapper);
+                break;
+            case "分类":
+                queryWrapper = bookService.searchByCategory(value, queryWrapper);
+                break;
+            case "出版社":
+                queryWrapper = bookService.searchByPublisher(value, queryWrapper);
+                break;
+            case "书号":
+                queryWrapper = bookService.searchById(value, queryWrapper);
+                break;
+            default:
+                break;
+        }
         //按照书本的id升序排序
         queryWrapper.orderByAsc(Book::getId);
         Page<Book> result = bookService.page(pageInfo, queryWrapper);

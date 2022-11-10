@@ -11,18 +11,20 @@
             <result property="img" column="img" jdbcType="VARCHAR"/>
             <result property="publisher" column="publisher" jdbcType="VARCHAR"/>
             <result property="introduction" column="introduction" jdbcType="VARCHAR"/>
-            <result property="total" column="total" jdbcType="BIGINT"/>
+            <result property="category" column="category" jdbcType="VARCHAR"/>
             <result property="inLibraryTotal" column="in_library_total" jdbcType="BIGINT"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
             <result property="price" column="price" jdbcType="DOUBLE"/>
+            <result property="total" column="total" jdbcType="BIGINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,book_name,author,
         img,publisher,introduction,
-        total,in_library_total,create_time,
-        update_time,is_delete,price
+        category,in_library_total,create_time,
+        update_time,is_delete,price,
+        total
     </sql>
 </mapper>

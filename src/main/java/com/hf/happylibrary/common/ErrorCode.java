@@ -11,6 +11,7 @@ public enum ErrorCode {
     REGISTER_PARAMS_NULL(10101,"账号或密码或校验密码为空","注册时必须输入账号密码以及校验密码"),
     STATUS_ERROR(20002,"用户状态异常",""),
     EXIST_ERROR(20003,"用户已存在",""),
+    ALREADY_RETURN(30001,"书籍已归还","书籍不可重复归还"),
     PARAMS_ERROR(40000,"请求参数错误",""),
     NULL_ERROR(40001,"请求数据为空",""),
     NOT_LOGIN(40100,"未登录",""),

@@ -51,6 +51,11 @@ public class Book implements Serializable {
     private String introduction;
 
     /**
+     * 书籍类别
+     */
+    private String category;
+
+    /**
      * 馆藏总数
      */
     private Long total;
