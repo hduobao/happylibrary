@@ -1,19 +1,23 @@
-CREATE TABLE USER
+-- auto-generated definition
+create table user
 (
-    id           BIGINT AUTO_INCREMENT COMMENT 'id'
-        PRIMARY KEY,
-    username     VARCHAR(256)                       NULL COMMENT '昵称',
-    user_account  INT(32)                       NULL COMMENT '学号',
-    avatar    VARCHAR(1024)                      NULL COMMENT '用户头像',
-    gender       TINYINT                            NULL COMMENT '性别',
-    user_password VARCHAR(512)                       NOT NULL COMMENT '密码',
-    phone        VARCHAR(128)                       NULL COMMENT '电话',
-    email        VARCHAR(512)                       NULL COMMENT '邮箱',
-    violation 	  INT 				     NOT NULL DEFAULT 0 COMMENT '违约次数',
-    user_status   INT      DEFAULT 0                 NOT NULL COMMENT '用户状态 0-正常',
-    user_role     INT      DEFAULT 0                 NOT NULL COMMENT '用户角色：0=普通用户 1=管理员',
-    create_time   DATETIME DEFAULT CURRENT_TIMESTAMP NULL COMMENT '创建时间',
-    update_time   DATETIME DEFAULT CURRENT_TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    is_delete     TINYINT  DEFAULT 0                 NOT NULL COMMENT '是否删除'
+    id            bigint auto_increment comment 'id'
+        primary key,
+    username      varchar(256)                       null comment '昵称',
+    user_account  bigint                             not null comment '学号',
+    avatar        varchar(1024)                      null comment '用户头像',
+    gender        tinyint                            null comment '性别',
+    user_password varchar(512)                       not null comment '密码',
+    phone         varchar(128)                       null comment '电话',
+    email         varchar(512)                       null comment '邮箱',
+    violation     int      default 0                 not null comment '违约次数',
+    user_status   int      default 1                 not null comment '用户状态 1-正常',
+    user_role     int      default 0                 not null comment '用户角色：0=普通用户 1=管理员',
+    create_time   datetime default CURRENT_TIMESTAMP null comment '创建时间',
+    update_time   datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间',
+    is_delete     tinyint  default 0                 not null comment '是否删除',
+    constraint user_user_account_uindex
+        unique (user_account)
 )
-    COMMENT '用户';
+    comment '用户';
+

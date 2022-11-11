@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.hf.happylibrary.model.domain.BorrowingForm;
 import com.hf.happylibrary.service.BorrowingFormService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -37,6 +38,7 @@ public class BorrowingFormServiceImpl extends ServiceImpl<BorrowingFormMapper, B
      * @return
      */
     @Override
+    @Transactional
     public boolean borrowBook(User user, Long bookId) {
 
         if (user.getViolation() >= 3) {
@@ -65,6 +67,7 @@ public class BorrowingFormServiceImpl extends ServiceImpl<BorrowingFormMapper, B
      * @return
      */
     @Override
+    @Transactional
     public boolean returnBook(User user, Long borrowId) {
 
         BorrowingForm form = borrowingFormMapper.selectById(borrowId);

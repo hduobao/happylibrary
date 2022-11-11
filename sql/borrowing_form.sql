@@ -1,11 +1,17 @@
-CREATE TABLE borrowing_form(
-                               id           BIGINT AUTO_INCREMENT COMMENT 'id'
-                                   PRIMARY KEY,
-                               user_id BIGINT NOT NULL COMMENT '用户id',
-                               book_id BIGINT NOT NULL COMMENT '书籍id',
-                               borrow_time   DATETIME NULL COMMENT '借阅时间',
-                               return_time   DATETIME COMMENT '归还时间',
-                               create_time   DATETIME DEFAULT CURRENT_TIMESTAMP NULL COMMENT '创建时间',
-                               update_time   DATETIME DEFAULT CURRENT_TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-                               is_delete     TINYINT  DEFAULT 0                 NOT NULL COMMENT '是否删除'
-) COMMENT '借阅表'
+-- auto-generated definition
+create table borrowing_form
+(
+    id            bigint auto_increment comment 'id'
+        primary key,
+    user_id       bigint                             not null comment '用户id',
+    book_id       bigint                             not null comment '书籍id',
+    borrow_term   int      default 30                not null comment '借阅图书的期限',
+    borrow_time   datetime                           null comment '借阅时间',
+    return_time   datetime                           null comment '归还时间',
+    return_status tinyint  default 0                 not null comment '是否违规',
+    create_time   datetime default CURRENT_TIMESTAMP null comment '创建时间',
+    update_time   datetime default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间',
+    is_delete     tinyint  default 0                 not null comment '是否删除'
+)
+    comment '借阅表';
+
